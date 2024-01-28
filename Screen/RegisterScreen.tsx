@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Alert, Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import userStore from "../stores/userStore";
+import { inject, observer } from "mobx-react";
 
-export default function RegisterScreen() {
+const RegisterScreen = ({userStore}) => {
   const [name, setName] = useState<string | null>(null)
   const [password, setPassword] = useState<string | null>(null)
 
@@ -64,3 +65,5 @@ const styles = StyleSheet.create({
     borderColor: "black",borderWidth: 1, width: 300,height: 50, borderRadius: 5
   },
 })
+
+export default inject('userStore')(observer(RegisterScreen));

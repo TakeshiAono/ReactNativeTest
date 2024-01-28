@@ -10,6 +10,9 @@ import { useEffect } from 'react';
 import useSQlite from './hooks/useSQlite';
 import HomeScreen from './Screen/HomeScreen';
 import CreateScreen from './Screen/CreateScreen';
+import { Provider } from 'mobx-react';
+import BlogStore from './stores/blogStore';
+import UserStore from './stores/userStore';
 
 export default function App() {
   // const db = SQLite.openDatabase("blogDB3");
@@ -47,20 +50,23 @@ export default function App() {
   }
 
   const Stack = createStackNavigator()
+  const blogStore = new BlogStore()
+  const userStore = new UserStore()
 
   return (
-
+  <Provider blogStore={blogStore} userStore={userStore}>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginScreen}/>
         <Stack.Screen name="Register" component={RegisterScreen}/>
         <Stack.Screen name="Home" component={HomeScreen}/>
         <Stack.Screen name="Create" component={CreateScreen}/>
-        <Stack.Screen name="Show" component={HomeScreen}/>
-        <Stack.Screen name="Edit" component={HomeScreen}/>
-        <Stack.Screen name="Delete" component={HomeScreen}/>
+        {/* <Stack.Screen name="Show" component={HomeScreen}/> */}
+        {/* <Stack.Screen name="Edit" component={HomeScreen}/> */}
+        {/* <Stack.Screen name="Delete" component={HomeScreen}/> */}
       </Stack.Navigator>
     </NavigationContainer>
+  </Provider>
   );
 }
 

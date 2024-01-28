@@ -1,20 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import useSQlite from "../hooks/useSQlite";
 import userStore from "../stores/userStore";
+import { inject, observer } from "mobx-react";
 
-export default function LoginScreen() {
+const LoginScreen = ({userStore, blogStore}) => {
   const [name, setName] = useState<string | null>(null)
   const [password, setPassword] = useState<string | null>(null)
   const navigation = useNavigation()
 
   const findUser = async () => {
     if(name && password) {
-      const result = await userStore.findUser(name, password)
-        // console.log("リザルト",result)
+      const result = await userStore.findUser(name, password, blogStore)
         if (result) {
-          navigation.navigate("Home", {userName: name})
+          navigation.navigate("Home")
         } else {
           Alert.alert(
             '認証エラー', 
@@ -33,6 +32,7 @@ export default function LoginScreen() {
 
   return (
     <View>
+      {console.log("ユーザーすとあ",userStore)}
       <View style={{marginLeft: "auto"}}>
         <TouchableOpacity onPress={() => {navigation.navigate("Register")}}>
           <Text style={{color: "skyblue", fontSize: 18}}>{"アカウント作成 >"}</Text>
@@ -70,3 +70,5 @@ const styles = StyleSheet.create({
     borderColor: "black",borderWidth: 1, width: 300,height: 50, borderRadius: 5
   },
 })
+
+export default inject('userStore', 'blogStore')(observer(LoginScreen));
