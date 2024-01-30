@@ -37,21 +37,35 @@ export default class BlogStore {
 
   @action
   createBlog(title: string, content: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.db.transaction((tx) => {
-        tx.executeSql(
-          `insert into blogs (title, content, user_id) values (?, ?, ?);`,
-          [title, content, this.userId],
-          () => {
-            this.addBlog(title, content)
-            resolve();
-          },
-          () => {
-            console.log("失敗");
-            reject();
-          }
-        );
-      });
+    this.db.transaction((tx) => {
+      tx.executeSql(
+        `insert into blogs (title, content, user_id) values (?, ?, ?);`,
+        [title, content, this.userId],
+        () => {
+          this.addBlog(title, content)
+        },
+        () => {
+          console.log("失敗");
+        }
+      );
+    });
+  }
+
+  @action
+  updateBlog(id: number, title: string, content: string): Promise<void> {
+    this.db.transaction((tx) => {
+      tx.executeSql(
+        `update blogs set title=?, content=? where id=?;`,
+        [title, content, id],
+        () => {
+          const blog = this.findBlog(id)
+          blog.title = title
+          blog.content = content
+        },
+        () => {
+          console.log("失敗");
+        }
+      );
     });
   }
 
@@ -84,5 +98,21 @@ export default class BlogStore {
   private addBlog(title, content) {
     this.blogs.push({ title: title, content: content, userId: this.userId });
     this.blogs = [...this.blogs]
+  }
+
+  @action
+  public deleteBlog(id: number) {
+    this.db.transaction((tx) => {
+      tx.executeSql(
+        `delete from blogs where id=?;`,
+        [id],
+        (first, fetchBlogs) => {
+          this.blogs = this.blogs.filter((blog) => blog.id != id)
+        },
+        () => {
+          console.log("失敗");
+        }
+      );
+    });
   }
 }

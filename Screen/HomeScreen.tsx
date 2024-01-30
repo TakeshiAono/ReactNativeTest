@@ -6,7 +6,6 @@ import BlogStore, { Blog } from "../stores/blogStore";
 import { inject, observer } from "mobx-react";
 
 const HomeScreen = ({ blogStore }: { blogStore: BlogStore }) => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
   const navigation = useNavigation();
 
   return (
@@ -16,11 +15,11 @@ const HomeScreen = ({ blogStore }: { blogStore: BlogStore }) => {
         <View>
           <Text key={blog.title}>{blog.title}</Text>
           <Button title={"編集"} onPress={() => navigation.navigate("Edit", {blogId: blog.id})}></Button>
+          <Button title="削除" onPress={() =>{blogStore.deleteBlog(blog.id)}}></Button>
         </View>
       )}
       <Button title="更新" onPress={() =>{blogStore.fetchBlogsByUser()}}></Button>
     </View>
-
   );
 };
 

@@ -16,7 +16,6 @@ import { inject, observer } from "mobx-react";
 const CreateScreen = ({blogStore}) => {
   const [title, setTitle] = useState<string | null>(null);
   const [content, setContent] = useState<string | null>(null);
-  const [blogs, setBlogs] = useState([]);
   const navigation = useNavigation();
 
 
@@ -53,17 +52,11 @@ const CreateScreen = ({blogStore}) => {
         style={{ flexDirection: "row", justifyContent: "flex-end", width: 300 }}
       >
         <Button
-          title="登録a"
+          title="登録"
           onPress={() => {
             if (title && content)
-              blogStore
-                .createBlog(title, content)
-                .then(() => {
-                  navigation.navigate("Home");
-                })
-                .catch(() => {
-                  console.log("えらー");
-                });
+              blogStore.createBlog(title, content)
+              navigation.navigate("Home");
           }}
         />
       </View>

@@ -59,17 +59,11 @@ const EditScreen = ({blogStore}) => {
         style={{ flexDirection: "row", justifyContent: "flex-end", width: 300 }}
       >
         <Button
-          title="登録a"
+          title="更新"
           onPress={() => {
             if (title && content)
-              blogStore
-                .createBlog(title, content)
-                .then(() => {
-                  navigation.navigate("Home");
-                })
-                .catch(() => {
-                  console.log("えらー");
-                });
+              blogStore.updateBlog(route.params.blogId, title, content)
+              navigation.navigate("Home");
           }}
         />
       </View>
