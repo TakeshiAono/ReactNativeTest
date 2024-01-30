@@ -1,7 +1,5 @@
 import { action, observable } from "mobx";
-import { User } from "./userStore";
 import useSQlite from "../hooks/useSQlite";
-// import { ACTION } from "mobx/dist/internal";
 
 export type Blog = {
   id: number;
@@ -31,6 +29,7 @@ export default class BlogStore {
     return this.fetchBlogsByUser();
   }
 
+
   @action
   setUserId(userId: number): void {
     this.userId = userId;
@@ -38,24 +37,16 @@ export default class BlogStore {
 
   @action
   createBlog(title: string, content: string): Promise<void> {
-    console.log("くりぶろ")
     return new Promise((resolve, reject) => {
-      console.log("くりぶろ２")
       this.db.transaction((tx) => {
-        console.log("くりぶろ３")
         tx.executeSql(
           `insert into blogs (title, content, user_id) values (?, ?, ?);`,
           [title, content, this.userId],
-          (a,b) => {
-            console.log("成功");
-            console.log("りり", a);
-            console.log("りり2",b)
+          () => {
             this.addBlog(title, content)
             resolve();
-            // resolve(fetchBlogs.rows._array);
           },
-          (e) => {
-            console.log(e)
+          () => {
             console.log("失敗");
             reject();
           }
@@ -66,18 +57,13 @@ export default class BlogStore {
 
   @action
   async fetchBlogsByUser(): Promise<Blog[]> {
-    // console.log("いあいあ", this.userId)
     return new Promise((resolve, reject) => {
       this.db.transaction((tx) => {
         tx.executeSql(
           `select blogs.* from users join blogs on users.id = blogs.user_id where users.id=?;`,
           [this.userId],
           (first, fetchBlogs) => {
-            console.log("成功");
-            console.log(first);
-            console.log(fetchBlogs.rows._array);
-            console.log("成功2");
-            // return fetchBlogs.rows._array
+            this.blogs = fetchBlogs.rows._array
             resolve(fetchBlogs.rows._array);
           },
           () => {
@@ -90,9 +76,13 @@ export default class BlogStore {
   }
 
   @action
+  public findBlog(id: number) {
+    return this.blogs.find((blog) => blog.id == id)
+  }
+
+  @action
   private addBlog(title, content) {
     this.blogs.push({ title: title, content: content, userId: this.userId });
+    this.blogs = [...this.blogs]
   }
 }
-// const blogStore = new BlogStore();
-// export default blogStore;

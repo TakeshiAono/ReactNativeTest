@@ -1,7 +1,4 @@
-// import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
-// import * as SQLite from 'expo-sqlite';
-
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './Screen/LoginScreen';
@@ -13,9 +10,9 @@ import CreateScreen from './Screen/CreateScreen';
 import { Provider } from 'mobx-react';
 import BlogStore from './stores/blogStore';
 import UserStore from './stores/userStore';
+import EditScreen from './Screen/EditScreen';
 
 export default function App() {
-  // const db = SQLite.openDatabase("blogDB3");
   const db = useSQlite()
 
   useEffect(() => {
@@ -54,19 +51,17 @@ export default function App() {
   const userStore = new UserStore()
 
   return (
-  <Provider blogStore={blogStore} userStore={userStore}>
+    <Provider blogStore={blogStore} userStore={userStore}>
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen}/>
-        <Stack.Screen name="Register" component={RegisterScreen}/>
-        <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="Create" component={CreateScreen}/>
-        {/* <Stack.Screen name="Show" component={HomeScreen}/> */}
-        {/* <Stack.Screen name="Edit" component={HomeScreen}/> */}
-        {/* <Stack.Screen name="Delete" component={HomeScreen}/> */}
-      </Stack.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={LoginScreen}/>
+          <Stack.Screen name="Register" component={RegisterScreen}/>
+          <Stack.Screen name="Home" component={HomeScreen}/>
+          <Stack.Screen name="Create" component={CreateScreen}/>
+          <Stack.Screen name="Edit" component={EditScreen}/>
+        </Stack.Navigator>
     </NavigationContainer>
-  </Provider>
+    </Provider>
   );
 }
 

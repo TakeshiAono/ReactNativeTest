@@ -9,31 +9,18 @@ const HomeScreen = ({ blogStore }: { blogStore: BlogStore }) => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const navigation = useNavigation();
 
-  useFocusEffect(
-    React.useCallback(() => {
-      console.log("描画処理2")
-      const fetchData = async () => {
-        try {
-          const result = await blogStore.fetchBlogsByUser();
-          setBlogs(result);
-        } catch (error) {
-          console.error('データの取得に失敗しました', error);
-        }
-      };
-
-      fetchData();
-    }, [])
-  )
-
-  const findBlogs = () => {
-    blogStore.getBlogs().then((blogs) => setBlogs(blogs));
-  };
-
   return (
     <View>
       <Button onPress={() => navigation.navigate("Create")} title={"新規作成"}></Button>
-      {blogs.map((blog) => <Text key={blog.title}>{blog.title}</Text>)}
+      {blogStore.blogs.map((blog) => 
+        <View>
+          <Text key={blog.title}>{blog.title}</Text>
+          <Button title={"編集"} onPress={() => navigation.navigate("Edit", {blogId: blog.id})}></Button>
+        </View>
+      )}
+      <Button title="更新" onPress={() =>{blogStore.fetchBlogsByUser()}}></Button>
     </View>
+
   );
 };
 

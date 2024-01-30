@@ -8,17 +8,21 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import useSQlite from "../hooks/useSQlite";
 import { inject, observer } from "mobx-react";
-// import blogStore from "../stores/blogStore";
 
-const CreateScreen = ({blogStore}) => {
-  const [title, setTitle] = useState<string | null>(null);
-  const [content, setContent] = useState<string | null>(null);
-  const [blogs, setBlogs] = useState([]);
+const EditScreen = ({blogStore}) => {
+  const [title, setTitle] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const [blog, setBlog] = useState([]);
   const navigation = useNavigation();
+  const route = useRoute()
 
+  useEffect(() => {
+    setTitle(blogStore.findBlog(route.params.blogId).title)
+    setContent(blogStore.findBlog(route.params.blogId).content)
+  }, [])
 
   return (
     <View
@@ -37,6 +41,7 @@ const CreateScreen = ({blogStore}) => {
             setTitle(value.nativeEvent.text);
             console.log(title);
           }}
+          value={title}
         />
       </View>
       <View style={{ marginBottom: 5 }}>
@@ -47,6 +52,7 @@ const CreateScreen = ({blogStore}) => {
             setContent(value.nativeEvent.text);
             console.log(content);
           }}
+          value={content}
         />
       </View>
       <View
@@ -81,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default inject('blogStore')(observer(CreateScreen));
+export default inject('blogStore')(observer(EditScreen));

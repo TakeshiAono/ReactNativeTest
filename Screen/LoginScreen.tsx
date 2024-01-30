@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import userStore from "../stores/userStore";
 import { inject, observer } from "mobx-react";
 
 const LoginScreen = ({userStore, blogStore}) => {
@@ -13,6 +12,7 @@ const LoginScreen = ({userStore, blogStore}) => {
     if(name && password) {
       const result = await userStore.findUser(name, password, blogStore)
         if (result) {
+          blogStore.fetchBlogsByUser()
           navigation.navigate("Home")
         } else {
           Alert.alert(
@@ -32,7 +32,6 @@ const LoginScreen = ({userStore, blogStore}) => {
 
   return (
     <View>
-      {console.log("ユーザーすとあ",userStore)}
       <View style={{marginLeft: "auto"}}>
         <TouchableOpacity onPress={() => {navigation.navigate("Register")}}>
           <Text style={{color: "skyblue", fontSize: 18}}>{"アカウント作成 >"}</Text>
