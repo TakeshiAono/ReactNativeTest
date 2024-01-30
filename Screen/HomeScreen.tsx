@@ -18,7 +18,6 @@ const HomeScreen = ({ blogStore }: { blogStore: BlogStore }) => {
           <Button title="削除" onPress={() =>{blogStore.deleteBlog(blog.id)}}></Button>
         </View>
       )}
-      <Button title="更新" onPress={() =>{blogStore.fetchBlogsByUser()}}></Button>
     </View>
   );
 };

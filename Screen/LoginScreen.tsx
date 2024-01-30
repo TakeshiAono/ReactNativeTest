@@ -12,7 +12,7 @@ const LoginScreen = ({userStore, blogStore}) => {
     if(name && password) {
       const result = await userStore.findUser(name, password, blogStore)
         if (result) {
-          blogStore.fetchBlogsByUser()
+          blogStore.fetchBlogsByUserId(result.id)
           navigation.navigate("Home")
         } else {
           Alert.alert(

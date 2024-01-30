@@ -26,7 +26,7 @@ export default class BlogStore {
 
   @action
   async getBlogs() {
-    return this.fetchBlogsByUser();
+    return this.blogs;
   }
 
 
@@ -70,22 +70,18 @@ export default class BlogStore {
   }
 
   @action
-  async fetchBlogsByUser(): Promise<Blog[]> {
-    return new Promise((resolve, reject) => {
-      this.db.transaction((tx) => {
-        tx.executeSql(
-          `select blogs.* from users join blogs on users.id = blogs.user_id where users.id=?;`,
-          [this.userId],
-          (first, fetchBlogs) => {
-            this.blogs = fetchBlogs.rows._array
-            resolve(fetchBlogs.rows._array);
-          },
-          () => {
-            console.log("失敗");
-            reject([]);
-          }
-        );
-      });
+  async fetchBlogsByUserId(userId: number) {
+    this.db.transaction((tx) => {
+      tx.executeSql(
+        `select blogs.* from users join blogs on users.id = blogs.user_id where users.id=?;`,
+        [userId],
+        (first, fetchBlogs) => {
+          this.blogs = fetchBlogs.rows._array
+        },
+        () => {
+          console.log("失敗");
+        }
+      );
     });
   }
 
