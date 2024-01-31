@@ -36,12 +36,13 @@ export default class BlogStore {
   }
 
   @action
-  createBlog(title: string, content: string): Promise<void> {
+  createBlog(title: string, content: string){
     this.db.transaction((tx) => {
       tx.executeSql(
         `insert into blogs (title, content, user_id) values (?, ?, ?);`,
         [title, content, this.userId],
         () => {
+          console.log("aaaaaa")
           this.addBlog(title, content)
         },
         () => {
@@ -92,7 +93,14 @@ export default class BlogStore {
 
   @action
   private addBlog(title, content) {
-    this.blogs.push({ title: title, content: content, userId: this.userId });
+    let lastId = 0
+    if (this.blogs.length == 0) {
+      lastId = 0
+    } else {
+      lastId = this.blogs[this.blogs.length - 1].id
+    }
+
+    this.blogs.push({ title: title, content: content, userId: this.userId, id: lastId + 1 });
     this.blogs = [...this.blogs]
   }
 
