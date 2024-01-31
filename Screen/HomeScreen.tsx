@@ -9,13 +9,23 @@ const HomeScreen = ({ blogStore }: { blogStore: BlogStore }) => {
   const navigation = useNavigation();
 
   return (
-    <View>
-      <Button onPress={() => navigation.navigate("Create")} title={"新規作成"}></Button>
+    <View style={{height: "100%"}}>
+      <View style={{marginTop: 10, marginBottom: 30, width: "30%"}}>
+        <Button onPress={() => navigation.navigate("Create")} title={"新規作成"}></Button>
+      </View>
       {blogStore.blogs.map((blog) => 
-        <View>
-          <Text key={blog.title}>{blog.title}</Text>
-          <Button title={"編集"} onPress={() => navigation.navigate("Edit", {blogId: blog.id})}></Button>
-          <Button title="削除" onPress={() =>{blogStore.deleteBlog(blog.id)}}></Button>
+        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+          <View style={{alignSelf: "flex-start", marginLeft: "auto", marginRight: "auto"}}>
+            <Text key={blog.title}>{blog.title}</Text>
+          </View>
+          <View style={{flexDirection: "row", width: "40%"}}>
+            <View style={{flex:1}}>
+              <Button title="編集" color="green" onPress={() => navigation.navigate("Edit", {blogId: blog.id})}></Button>
+            </View>
+            <View style={{flex:1}}>
+              <Button title="削除" color="red" onPress={() =>{blogStore.deleteBlog(blog.id)}}></Button>
+            </View>
+          </View>
         </View>
       )}
     </View>
