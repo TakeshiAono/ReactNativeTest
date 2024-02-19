@@ -10,6 +10,7 @@ export type Blog = {
   updatedAt: Date;
 };
 
+
 export default class BlogStore {
   @observable
   blogs: Blog[];
