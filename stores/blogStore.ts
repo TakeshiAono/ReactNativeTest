@@ -29,7 +29,6 @@ export default class BlogStore {
     return this.blogs;
   }
 
-
   @action
   setUserId(userId: number): void {
     this.userId = userId;
