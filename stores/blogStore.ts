@@ -11,6 +11,7 @@ export type Blog = {
 };
 
 
+
 export default class BlogStore {
   @observable
   blogs: Blog[];
