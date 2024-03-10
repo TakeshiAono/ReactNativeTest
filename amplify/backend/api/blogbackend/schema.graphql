@@ -2,7 +2,6 @@ type Article @model @auth(rules: [{allow: public}]) {
   id: ID!
   title: String
   content: String
-  createdAt: AWSDateTime
   blogID: ID! @index(name: "byBlog")
 }
 
@@ -10,6 +9,11 @@ type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   Blog: Blog @hasOne
+}
+
+type UserTest @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
 }
 
 type Blog @model @auth(rules: [{allow: public}]) {

@@ -10,11 +10,6 @@
       "StackName": "amplify-blogbackend-staging-141559",
       "StackId": "arn:aws:cloudformation:us-east-1:031863075928:stack/amplify-blogbackend-staging-141559/be1dec50-cc0c-11ee-a01c-0e17935cafe9",
       "AmplifyAppId": "d1c1b8sxxgspnc"
-    },
-    "categories": {
-      "api": {
-        "blogbackend": {}
-      }
     }
   }
 }
